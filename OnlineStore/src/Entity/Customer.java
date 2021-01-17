@@ -1,3 +1,5 @@
+package Entity;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ public class Customer {
     private String address;
     private Gender gender;
     private String phoneNumber;
-    private List<Item> lastPurchases = new ArrayList<>();
+    private List<Integer> lastPurchases = new ArrayList<>();
     private LocalDate dateOfLastPurchase;
 
     public Customer(String name, String address, String phoneNumber) {
@@ -17,14 +19,16 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, LocalDate dateOfLastPurchase) {
+    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, int[] items, LocalDate dateOfLastPurchase) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
+        addLastPurchase(items);
         this.dateOfLastPurchase = dateOfLastPurchase;
     }
+
 
     public String getName() {
         return name;
@@ -66,7 +70,13 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Item> getLastPurchases() {
+    public void addLastPurchase(int[] items) {
+        for (Integer item : items) {
+            lastPurchases.add(item);
+        }
+    }
+
+    public List<Integer> getLastPurchases() {
         return lastPurchases;
     }
 
@@ -80,7 +90,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Entity.Customer{" +
                 "name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", address='" + address + '\'' +
