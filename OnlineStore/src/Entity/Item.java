@@ -1,3 +1,5 @@
+package Entity;
+
 import java.time.LocalDate;
 
 public class Item {
@@ -7,11 +9,17 @@ public class Item {
     private String producer;
     private LocalDate dateOfLastUpdate;
 
-    public Item(int id, String title, int code, String producer) {
+    public Item(int id, int code) {
+        this.id = id;
+        this.code = code;
+    }
+
+    public Item(int id, String title, int code, String producer, LocalDate dateOfLastUpdate) {
         this.id = id;
         this.title = title;
         this.code = code;
         this.producer = producer;
+        this.dateOfLastUpdate = dateOfLastUpdate;
     }
 
     public int getId() {
@@ -56,7 +64,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" +
+        return "Entity.Item{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", code=" + code +
