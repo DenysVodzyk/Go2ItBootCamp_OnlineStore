@@ -13,20 +13,22 @@ public class Customer {
     private List<Integer> lastPurchases = new ArrayList<>();
     private LocalDate dateOfLastPurchase;
 
-    public Customer(String name, String address, String phoneNumber) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, int[] items, LocalDate dateOfLastPurchase) {
+    public Customer(String name, LocalDate dateOfBirth, String address) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
+    }
+
+    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, int[] items, LocalDate dateOfLastPurchase) {
+        this(name, dateOfBirth, address);
         this.gender = gender;
-        this.phoneNumber = phoneNumber;
         addLastPurchase(items);
         this.dateOfLastPurchase = dateOfLastPurchase;
+    }
+
+    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, int[] items, LocalDate dateOfLastPurchase) {
+        this(name, dateOfBirth, address, gender, items, dateOfLastPurchase);
+        this.phoneNumber = phoneNumber;
     }
 
 
