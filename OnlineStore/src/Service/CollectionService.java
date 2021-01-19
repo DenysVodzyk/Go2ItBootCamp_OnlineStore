@@ -53,9 +53,7 @@ public class CollectionService {
     public List<Integer> getAllLastPurchases(Set<Customer> customers) {
         List<Integer> lastPurchases = new ArrayList<>();
         for (Customer customer : customers) {
-            for (Integer purchase : customer.getLastPurchases()) {
-                lastPurchases.add(purchase);
-            }
+            lastPurchases.addAll(customer.getLastPurchases());
         }
         return lastPurchases;
     }
