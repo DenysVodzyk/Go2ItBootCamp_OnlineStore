@@ -4,34 +4,43 @@ import java.util.*;
 
 public class ReportService {
 
-    //output is the list of item starting with the most popular item
-    public void mostPopularItems(List<Integer> items) {
-        Set<Integer> mostPopularItems = new HashSet<>();
-        Map<Integer, Integer> map = new HashMap<>();
-        System.out.println(items);
-
+    //put all passed items into map, where key is the item and value is the number of occurrences
+    public Map<Integer, Integer> itemIntoMap(List<Integer> items) {
+        Map<Integer, Integer> itemMap = new HashMap<>();
         for (int i : items) {
-            Integer count = map.get(i);
-            map.put(i, count != null ? count + 1 : 1);
+            Integer count = itemMap.get(i);
+            itemMap.put(i, count != null ? count + 1 : 1);
         }
-
-        for (Integer name : map.keySet()) {
-            System.out.println(name + " : " + map.get(name));
-        }
-
-
-//        List<Integer> max = Collections.sort(map.entrySet(),
-//                new Comparator<Map.Entry<Integer, Integer>>() {
-//            @Override
-//            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
-//                return o1.getValue().compareTo(o2.getValue());
-//            }
-//        });
-
-
+        return itemMap;
     }
 
+    //output is the list of item starting with the most popular item
+    public List<Integer> mostPopularItems(List<Integer> items) {
+        Map<Integer, Integer> itemMap = itemIntoMap(items);
+        List<Map.Entry<Integer, Integer>> itemMapToSort = new ArrayList<>(itemMap.entrySet());
+        List<Integer> mostPopularItems = new ArrayList<>();
 
+        itemMapToSort.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
+        itemMapToSort.forEach(s -> {
+            mostPopularItems.add(s.getKey());
+        });
+        return mostPopularItems;
+    }
+
+    //output is the list of item starting with the least popular item
+    public List<Integer> leastPopularItems(List<Integer> items) {
+        Map<Integer, Integer> itemMap = itemIntoMap(items);
+        List<Map.Entry<Integer, Integer>> itemMapToSort = new ArrayList<>(itemMap.entrySet());
+        List<Integer> leastPopularItems = new ArrayList<>();
+
+        itemMapToSort.sort((o1, o2) -> o1.getValue().compareTo(o2.getValue()));
+
+        itemMapToSort.forEach(s -> {
+            leastPopularItems.add(s.getKey());
+        });
+        return leastPopularItems;
+    }
 
 
 }
