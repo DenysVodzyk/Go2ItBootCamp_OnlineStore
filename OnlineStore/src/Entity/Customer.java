@@ -10,7 +10,7 @@ public class Customer {
     private String address;
     private Gender gender;
     private String phoneNumber;
-    private List<Integer> lastPurchases = new ArrayList<>();
+    private List<Item> lastPurchases = new ArrayList<>();
     private LocalDate dateOfLastPurchase;
 
     public Customer(String name, LocalDate dateOfBirth, String address) {
@@ -22,7 +22,7 @@ public class Customer {
     public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, int[] items, LocalDate dateOfLastPurchase) {
         this(name, dateOfBirth, address);
         this.gender = gender;
-        addLastPurchase(items);
+        addLastPurchases(items);
         this.dateOfLastPurchase = dateOfLastPurchase;
     }
 
@@ -72,13 +72,17 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addLastPurchase(int[] items) {
+    public void addLastPurchases(int[] items) {
         for (Integer item : items) {
-            lastPurchases.add(item);
+            addLastPurchase(item);
         }
     }
 
-    public List<Integer> getLastPurchases() {
+    public void addLastPurchase(int item) {
+        lastPurchases.add(new Item(item));
+    }
+
+    public List<Item> getLastPurchases() {
         return lastPurchases;
     }
 
