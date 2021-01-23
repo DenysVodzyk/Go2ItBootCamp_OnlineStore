@@ -9,9 +9,8 @@ public class Item {
     private String producer;
     private LocalDate dateOfLastUpdate;
 
-    public Item(int id, int code) {
+    public Item(int id) {
         this.id = id;
-        this.code = code;
     }
 
     public Item(int id, String title, int code, String producer, LocalDate dateOfLastUpdate) {
