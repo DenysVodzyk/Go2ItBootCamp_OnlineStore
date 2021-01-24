@@ -10,8 +10,8 @@ public class Customer {
     private String address;
     private Gender gender;
     private String phoneNumber;
-    private List<Item> lastPurchases = new ArrayList<>();
-    private LocalDate dateOfLastPurchase;
+    private List<Order> order = new ArrayList<>();
+    private LocalDate dateOfPurchase;
 
     public Customer(String name, LocalDate dateOfBirth, String address) {
         this.name = name;
@@ -19,18 +19,16 @@ public class Customer {
         this.address = address;
     }
 
-    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, int[] items, LocalDate dateOfLastPurchase) {
+    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, List<Item> items, LocalDate dateOfLastPurchase) {
         this(name, dateOfBirth, address);
         this.gender = gender;
-        addLastPurchases(items);
-        this.dateOfLastPurchase = dateOfLastPurchase;
+        order.add(new Order(dateOfLastPurchase, Customer.this, items));
     }
 
-    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, int[] items, LocalDate dateOfLastPurchase) {
+    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, List<Item> items, LocalDate dateOfLastPurchase) {
         this(name, dateOfBirth, address, gender, items, dateOfLastPurchase);
         this.phoneNumber = phoneNumber;
     }
-
 
     public String getName() {
         return name;
@@ -72,38 +70,31 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addLastPurchases(int[] items) {
-        for (Integer item : items) {
-            addLastPurchase(item);
-        }
+    public void setOrder(List<Order> order) {
+        this.order = order;
     }
 
-    public void addLastPurchase(int item) {
-        lastPurchases.add(new Item(item));
+    public List<Order> getOrder() {
+        return order;
     }
 
-    public List<Item> getLastPurchases() {
-        return lastPurchases;
+    public LocalDate getDateOfPurchase() {
+        return dateOfPurchase;
     }
 
-    public LocalDate getDateOfLastPurchase() {
-        return dateOfLastPurchase;
-    }
-
-    public void setDateOfLastPurchase(LocalDate dateOfLastPurchase) {
-        this.dateOfLastPurchase = dateOfLastPurchase;
+    public void setDateOfPurchase(LocalDate dateOfPurchase) {
+        this.dateOfPurchase = dateOfPurchase;
     }
 
     @Override
     public String toString() {
-        return "Entity.Customer{" +
+        return "Customer{" +
                 "name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", address='" + address + '\'' +
                 ", gender=" + gender +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", lastPurchases=" + lastPurchases +
-                ", dateOfLastPurchase=" + dateOfLastPurchase +
+                ", order=" + order +
                 '}';
     }
 }
