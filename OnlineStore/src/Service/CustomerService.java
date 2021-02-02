@@ -65,4 +65,15 @@ public class CustomerService {
         return lastPurchases;
     }
 
+    public List<Customer> getCustomersByGender(List<Customer> customers, Gender gender) {
+        List<Customer> sortedCustomers = new ArrayList<>();
+
+        for (Customer customer : customers) {
+            if (customer.getGender() == gender)
+                sortedCustomers.add(customer);
+        }
+        return sortedCustomers;
+    }
+
+
 }
