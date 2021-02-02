@@ -7,6 +7,7 @@ import Service.ItemService;
 import Service.ReportService;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -18,18 +19,22 @@ public class Main {
 
         ItemService service = new ItemService();
         CustomerService customerService = new CustomerService();
+        ReportService reportService = new ReportService();
 
-        for (Customer customer : customerService.getCustomers(customerFilePath, itemFilePath)) {
-            System.out.println(customer.getOrder());
+        List<Customer> customers = customerService.getCustomers(customerFilePath, itemFilePath);
+
+        List<Customer> women = customerService.getCustomersByGender(customers, Gender.FEMALE);
+
+        List<Item> WomenItems = service.getItemsFromCustomers(women);
+
+        List<Integer> popularItemsAmongWomen = reportService.isPopularItems(WomenItems, false);
+
+        for (Item item : WomenItems) {
+            System.out.print(item.getId() + " ");
         }
+        System.out.println("");
 
-        for (Item item : service.getItems(itemFilePath)) {
-            System.out.println(item);
-        }
-
-
-
-
+        System.out.println(popularItemsAmongWomen);
 
 
 //        Customer charaP = new Customer("Chara Pastrana", LocalDate.of(1954, 4, 26), "7592 College Dr.Fishers, IN 46037", Gender.FEMALE, "(815) 203-5480", new int[]{2, 4, 12}, LocalDate.of(2017, 6, 1));
