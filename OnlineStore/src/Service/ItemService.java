@@ -1,6 +1,8 @@
 package Service;
 
+import Entity.Customer;
 import Entity.Item;
+import Entity.Order;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -39,6 +41,18 @@ public class ItemService {
     public LocalDate getDateOfLastUpdate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy H:mm:ss");
         return LocalDate.parse(date, formatter);
+    }
+
+    public List<Item> getItemsFromCustomers(List<Customer> customers) {
+        List<Item> items = new ArrayList<>();
+        for (Customer customer : customers) {
+            for (Order order : customer.getOrder()) {
+                for (Item item : order.getItems()) {
+                    items.add(item);
+                }
+            }
+        }
+        return items;
     }
 
 
