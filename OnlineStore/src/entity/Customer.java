@@ -1,8 +1,9 @@
-package Entity;
+package entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Customer {
     private String name;
@@ -96,5 +97,24 @@ public class Customer {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", order=" + order +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(name, customer.name) &&
+                Objects.equals(dateOfBirth, customer.dateOfBirth) &&
+                Objects.equals(address, customer.address) &&
+                gender == customer.gender &&
+                Objects.equals(phoneNumber, customer.phoneNumber) &&
+                Objects.equals(order, customer.order) &&
+                Objects.equals(dateOfPurchase, customer.dateOfPurchase);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, dateOfBirth, address, gender, phoneNumber, order, dateOfPurchase);
     }
 }
