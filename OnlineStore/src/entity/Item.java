@@ -1,6 +1,7 @@
-package Entity;
+package entity;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Item {
     private int id;
@@ -70,5 +71,22 @@ public class Item {
                 ", producer='" + producer + '\'' +
                 ", dateOfLastUpdate=" + dateOfLastUpdate +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id == item.id &&
+                code == item.code &&
+                Objects.equals(title, item.title) &&
+                Objects.equals(producer, item.producer) &&
+                Objects.equals(dateOfLastUpdate, item.dateOfLastUpdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, code, producer, dateOfLastUpdate);
     }
 }
