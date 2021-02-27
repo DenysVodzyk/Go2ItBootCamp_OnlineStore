@@ -1,6 +1,6 @@
 package entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Item {
@@ -8,13 +8,13 @@ public class Item {
     private String title;
     private int code;
     private String producer;
-    private LocalDate dateOfLastUpdate;
+    private LocalDateTime dateOfLastUpdate;
 
     public Item(int id) {
         this.id = id;
     }
 
-    public Item(int id, String title, int code, String producer, LocalDate dateOfLastUpdate) {
+    public Item(int id, String title, int code, String producer, LocalDateTime dateOfLastUpdate) {
         this.id = id;
         this.title = title;
         this.code = code;
@@ -54,11 +54,11 @@ public class Item {
         this.producer = producer;
     }
 
-    public LocalDate getDateOfLastUpdate() {
+    public LocalDateTime getDateOfLastUpdate() {
         return dateOfLastUpdate;
     }
 
-    public void setDateOfLastUpdate(LocalDate dateOfLastUpdate) {
+    public void setDateOfLastUpdate(LocalDateTime dateOfLastUpdate) {
         this.dateOfLastUpdate = dateOfLastUpdate;
     }
 
