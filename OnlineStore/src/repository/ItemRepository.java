@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ItemRepository {
 
-    public void addItem(Item item) {
+    public void add(Item item) {
         String sql = "INSERT INTO item(id, title, code, producer, dateOfLastUpdate) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection con = DBConnection.getConnection();
