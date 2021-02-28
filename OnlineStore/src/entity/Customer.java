@@ -1,7 +1,6 @@
 package entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,24 +10,16 @@ public class Customer {
     private String address;
     private Gender gender;
     private String phoneNumber;
-    private List<Order> order = new ArrayList<>();
+    private Order order;
     private LocalDate dateOfPurchase;
 
-    public Customer(String name, LocalDate dateOfBirth, String address) {
+    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, List<Item> items, LocalDate dateOfLastPurchase) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
-    }
-
-    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, List<Item> items, LocalDate dateOfLastPurchase) {
-        this(name, dateOfBirth, address);
         this.gender = gender;
-        order.add(new Order(dateOfLastPurchase, Customer.this, items));
-    }
-
-    public Customer(String name, LocalDate dateOfBirth, String address, Gender gender, String phoneNumber, List<Item> items, LocalDate dateOfLastPurchase) {
-        this(name, dateOfBirth, address, gender, items, dateOfLastPurchase);
         this.phoneNumber = phoneNumber;
+        this.order = new Order(dateOfLastPurchase, Customer.this, items);
     }
 
     public String getName() {
@@ -71,12 +62,12 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setOrder(List<Order> order) {
-        this.order = order;
+    public Order getOrder() {
+        return order;
     }
 
-    public List<Order> getOrder() {
-        return order;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public LocalDate getDateOfPurchase() {
@@ -108,13 +99,11 @@ public class Customer {
                 Objects.equals(dateOfBirth, customer.dateOfBirth) &&
                 Objects.equals(address, customer.address) &&
                 gender == customer.gender &&
-                Objects.equals(phoneNumber, customer.phoneNumber) &&
-                Objects.equals(order, customer.order) &&
-                Objects.equals(dateOfPurchase, customer.dateOfPurchase);
+                Objects.equals(phoneNumber, customer.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, dateOfBirth, address, gender, phoneNumber, order, dateOfPurchase);
+        return Objects.hash(name, dateOfBirth, address, gender, phoneNumber);
     }
 }
