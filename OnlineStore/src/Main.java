@@ -1,21 +1,21 @@
-import Entity.Customer;
-import Entity.Gender;
-import Entity.Item;
-import Service.CollectionService;
-import Service.CustomerService;
-import Service.ItemService;
-import Service.ReportService;
+import entity.Customer;
+import entity.Gender;
+import entity.Item;
+import service.CustomerService;
+import service.ItemService;
+import service.ReportService;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
+        Execute execute = new Execute();
 
-        String customerFilePath = "C:\\Users\\vodzy\\IdeaProjects\\Go2ItBootCamp_OnlineStore\\Customers.csv";
-        String itemFilePath = "C:\\Users\\vodzy\\IdeaProjects\\Go2ItBootCamp_OnlineStore\\items.csv";
+        execute.execute();
+
+
+/*        String customerFilePath = "C:\\Users\\vodzy\\IdeaProjects\\Go2ItBootCamp_OnlineStore\\Customers.csv";
+        String itemFilePath = "C:\\Users\\vodzy\\IdeaProjects\\Go2ItBootCamp_OnlineStore\\Items.csv";
 
         ItemService service = new ItemService();
         CustomerService customerService = new CustomerService();
@@ -34,7 +34,7 @@ public class Main {
         }
         System.out.println("");
 
-        System.out.println(popularItemsAmongWomen);
+        System.out.println(popularItemsAmongWomen);*/
 
 
 //        Customer charaP = new Customer("Chara Pastrana", LocalDate.of(1954, 4, 26), "7592 College Dr.Fishers, IN 46037", Gender.FEMALE, "(815) 203-5480", new int[]{2, 4, 12}, LocalDate.of(2017, 6, 1));
