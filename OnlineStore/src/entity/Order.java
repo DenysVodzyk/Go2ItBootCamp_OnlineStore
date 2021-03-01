@@ -66,13 +66,14 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(orderDate, order.orderDate) &&
+        return id == order.id &&
+                Objects.equals(orderDate, order.orderDate) &&
                 Objects.equals(customer, order.customer) &&
                 Objects.equals(items, order.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderDate, customer, items);
+        return Objects.hash(id, orderDate, customer, items);
     }
 }
