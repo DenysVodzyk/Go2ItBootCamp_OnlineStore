@@ -1,10 +1,30 @@
-package Service;
+package service;
 
-import Entity.Item;
+import entity.Customer;
+import entity.Gender;
+import entity.Item;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class ReportService {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private Set<Customer> customers = new HashSet<>();
+    private Map<List<Integer>, LocalDate> items = new HashMap<>();
 
     //put all passed items into map, where key is the item and value is the number of occurrences
     public Map<Integer, Integer> itemIntoMap(List<Integer> items) {
@@ -40,6 +60,32 @@ public class ReportService {
         });
         return itemsSorted;
     }
+
+    public List<Integer> getItemsDuringParticularWeekend(LocalDate startDate) {
+        LocalDate endDate = startDate.plusDays(1);
+        List<Integer> itemsDuringWeekend = new ArrayList<>();
+
+        for (Map.Entry<List<Integer>, LocalDate> entry : items.entrySet()) {
+            if (entry.getValue().equals(startDate) || entry.getValue().equals(endDate)) {
+                for (Integer item : entry.getKey()) {
+                    itemsDuringWeekend.add(item);
+                }
+            }
+        }
+        return itemsDuringWeekend;
+    }
+
+    public Set<Customer> getWomenCustomers(Set<Customer> customers) {
+        Set<Customer> women = new HashSet<>();
+        for (Customer customer : customers) {
+            if (customer.getGender().equals(Gender.FEMALE)) {
+                women.add(customer);
+            }
+        }
+        return women;
+    }
+
+
 
 //    //output is the list of item starting with the least popular item
 //    public List<Integer> leastPopularItems(List<Integer> items) {

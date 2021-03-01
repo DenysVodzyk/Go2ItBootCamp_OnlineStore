@@ -1,7 +1,7 @@
-package Service;
+package service;
 
-import Entity.Customer;
-import Entity.Gender;
+import entity.Customer;
+import entity.Gender;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -18,9 +18,9 @@ public class CollectionService {
         return customers;
     }
 
-    public void addItem(Customer customer) {
-        items.put(customer.getLastPurchases(), customer.getDateOfLastPurchase());
-    }
+//    public void addItem(Customer customer) {
+//        items.put(customer.getLastPurchases(), customer.getDateOfLastPurchase());
+//    }
 
     public Map<List<Integer>, LocalDate> getItems() {
         return items;
@@ -50,13 +50,13 @@ public class CollectionService {
         return women;
     }
 
-    public List<Integer> getAllLastPurchases(Set<Customer> customers) {
-        List<Integer> lastPurchases = new ArrayList<>();
-        for (Customer customer : customers) {
-            lastPurchases.addAll(customer.getLastPurchases());
-        }
-        return lastPurchases;
-    }
+//    public List<Integer> getAllLastPurchases(Set<Customer> customers) {
+//        List<Integer> lastPurchases = new ArrayList<>();
+//        for (Customer customer : customers) {
+//            lastPurchases.addAll(customer.getLastPurchases());
+//        }
+//        return lastPurchases;
+//    }
 
 
 }

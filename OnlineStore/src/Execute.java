@@ -1,6 +1,8 @@
 import entity.Customer;
+import entity.Gender;
 import entity.Item;
 import entity.Order;
+import reportService.ItemReportService;
 import service.CustomerService;
 import service.ItemService;
 import service.OrderService;
@@ -12,6 +14,7 @@ public class Execute {
     private ItemService itemService;
     private CustomerService customerService;
     private OrderService orderService;
+    private ItemReportService itemReportService;
     private final String ITEM_FILE_PATH = "OnlineStore/src/inputFiles/Items.csv";
     private final String CUSTOMER_FILE_PATH = "OnlineStore/src/inputFiles/Customers.csv";
 
@@ -24,6 +27,7 @@ public class Execute {
         this.itemService = new ItemService();
         this.customerService = new CustomerService();
         this.orderService = new OrderService();
+        this.itemReportService = new ItemReportService();
     }
 
     public void execute() {
@@ -32,6 +36,12 @@ public class Execute {
         List<Customer> customersJava = customerService.parseAll(CUSTOMER_FILE_PATH);
         List<Order> ordersJava = orderService.parseAll(CUSTOMER_FILE_PATH);
 
+        //data from db
+        List<Item> itemsSQL = itemService.getAll();
+        List<Customer> customersSQL = customerService.getAll();
+        List<Order> ordersSQL = orderService.getAll();
+
+
         //items from Java
         itemsJava.forEach(System.out::println);
         System.out.println();
@@ -39,7 +49,7 @@ public class Execute {
         //add all items to DB
         itemService.addAllToDB(itemsJava);
         //show all items from DB
-        itemService.getAll().forEach(System.out::println);
+        itemsSQL.forEach(System.out::println);
         System.out.println();
 
         //customers from Java
@@ -50,7 +60,7 @@ public class Execute {
         customerService.addAllToDB(customersJava);
 
         //show all customers to DB
-        customerService.getAll().forEach(System.out::println);
+        customersSQL.forEach(System.out::println);
         System.out.println();
 
         //show customer by ID and name
@@ -66,6 +76,26 @@ public class Execute {
 
         //add all orders to DB
         orderService.addAllToDB(ordersJava);
+
+        //show order by id
+        System.out.println(orderService.getById(1));
+        System.out.println();
+
+        //show all orders
+        ordersSQL.forEach(System.out::println);
+        System.out.println();
+
+        //show orders based on item id
+        orderService.getByItemId(2).forEach(System.out::println);
+        System.out.println();
+
+        //show order based on customer id
+        System.out.println(orderService.getByCustomerId(1));
+        System.out.println();
+
+        //Show female
+        System.out.println(itemReportService.getCustomerByGender(customersSQL, Gender.FEMALE));
+        System.out.println();
 
 
     }
