@@ -13,19 +13,44 @@ public class ItemRepository {
 
     public void add(Item item) {
         String sql = "INSERT INTO item(id, title, code, producer, dateOfLastUpdate) VALUES (?, ?, ?, ?, ?)";
-
+        int id = item.getId();
+        String title = item.getTitle();
+        int code = item.getCode();
+        String producer = item.getProducer();
+        java.sql.Timestamp lastUpdate = java.sql.Timestamp.valueOf(item.getDateOfLastUpdate());
         try (Connection con = DBConnection.getConnection();
              PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setInt(1, item.getId());
-            stm.setString(2, item.getTitle());
-            stm.setInt(3, item.getCode());
-            stm.setString(4, item.getProducer());
-            java.sql.Timestamp lastUpdate = java.sql.Timestamp.valueOf(item.getDateOfLastUpdate());
+            stm.setInt(1, id);
+            stm.setString(2, title);
+            stm.setInt(3, code);
+            stm.setString(4, producer);
             stm.setTimestamp(5, lastUpdate);
-            stm.executeUpdate();
+
+            if (!isInDb(id, title, code, producer)) {
+                stm.executeUpdate();
+            }
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public boolean isInDb(int id, String title, int code, String producer) {
+        boolean result = false;
+        String sql = "SELECT * FROM item WHERE id=? AND title=? AND code=? AND producer=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stm = con.prepareStatement(sql)) {
+            stm.setInt(1, id);
+            stm.setString(2, title);
+            stm.setInt(3, code);
+            stm.setString(4, producer);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                result = true;
+            }
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
     }
 
     public Item getById(int id) {
