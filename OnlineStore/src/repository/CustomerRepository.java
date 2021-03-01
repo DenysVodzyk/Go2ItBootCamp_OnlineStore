@@ -6,10 +6,7 @@ import service.GenderService;
 import utils.DBConnection;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +15,44 @@ public class CustomerRepository {
 
     public void add(Customer customer) {
         String sql = "INSERT INTO customer(name, dob, address, gender, phoneNumber) VALUES (?, ?, ?, ?, ?)";
-
+        String name = customer.getName();
+        java.sql.Date dob = java.sql.Date.valueOf(customer.getDateOfBirth());
+        String address = customer.getAddress();
+        String gender = customer.getGender().toString();
+        String phoneNumber = customer.getPhoneNumber();
         try (Connection con = DBConnection.getConnection();
              PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, customer.getName());
-            java.sql.Date dob = java.sql.Date.valueOf(customer.getDateOfBirth());
+            stm.setString(1, name);
             stm.setDate(2, dob);
-            stm.setString(3, customer.getAddress());
-            stm.setString(4, customer.getGender().toString());
-            stm.setString(5, customer.getPhoneNumber());
-            stm.executeUpdate();
+            stm.setString(3, address);
+            stm.setString(4, gender);
+            stm.setString(5, phoneNumber);
+
+            if (!isInDb(name, dob, address, gender)) {
+                stm.executeUpdate();
+            }
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public boolean isInDb(String name, Date dob, String address, String gender) {
+        boolean result = false;
+        String sql = "SELECT * FROM customer WHERE name=? AND dob=? AND address=? AND gender=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stm = con.prepareStatement(sql)) {
+            stm.setString(1, name);
+            stm.setDate(2, dob);
+            stm.setString(3, address);
+            stm.setString(4, gender);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                result = true;
+            }
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
     }
 
     public Customer getById(int id) {
