@@ -1,30 +1,40 @@
-package service;
+package reportService;
 
 import entity.Customer;
 import entity.Gender;
 import entity.Item;
+import entity.Order;
+import service.CustomerService;
+import service.ItemService;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class ReportService {
+public class ItemReportService {
+    private CustomerService customerService;
+    private ItemService itemService;
 
+    public ItemReportService() {
+        init();
+    }
 
+    private void init() {
+        this.customerService = new CustomerService();
+        this.itemService = new ItemService();
+    }
 
+    //pass true - to see most popular items, false - to see least popular items
+    public List<Item> getPopularItemsByGender(List<Customer> customers, Gender gender, boolean isPopular) {
+        List<Customer> customerByGender = customerService.getCustomersByGender(customers, gender);
+        List<Item> itemsByGender = new ArrayList<>();
 
+        customerByGender.forEach(customer -> itemsByGender.addAll(customer.getItems()));
 
+        List<Integer> ratedItemListCode = isPopularItems(itemsByGender, isPopular);
 
+        return itemService.getItemsById(ratedItemListCode);
+    }
 
-
-
-
-
-
-
-
-
-    private Set<Customer> customers = new HashSet<>();
-    private Map<List<Integer>, LocalDate> items = new HashMap<>();
 
     //put all passed items into map, where key is the item and value is the number of occurrences
     public Map<Integer, Integer> itemIntoMap(List<Integer> items) {
@@ -38,7 +48,7 @@ public class ReportService {
 
     //returns the list of items based on the boolean passed (true - popular, false - not popular),
     // starting with the most/least popular item
-    public List<Integer> isPopularItems(List<Item> items, boolean truePopular_falseNotPopular) {
+    public List<Integer> isPopularItems(List<Item> items, boolean isPopular) {
         List<Integer> itemsCode = new ArrayList<>();
 
         for (Item item : items) {
@@ -49,7 +59,7 @@ public class ReportService {
         List<Map.Entry<Integer, Integer>> itemMapToSort = new ArrayList<>(itemMap.entrySet());
         List<Integer> itemsSorted = new ArrayList<>();
 
-        if (truePopular_falseNotPopular) {
+        if (isPopular) {
             itemMapToSort.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         } else {
             itemMapToSort.sort((o1, o2) -> o1.getValue().compareTo(o2.getValue()));
@@ -61,30 +71,24 @@ public class ReportService {
         return itemsSorted;
     }
 
-    public List<Integer> getItemsDuringParticularWeekend(LocalDate startDate) {
-        LocalDate endDate = startDate.plusDays(1);
-        List<Integer> itemsDuringWeekend = new ArrayList<>();
-
-        for (Map.Entry<List<Integer>, LocalDate> entry : items.entrySet()) {
-            if (entry.getValue().equals(startDate) || entry.getValue().equals(endDate)) {
-                for (Integer item : entry.getKey()) {
-                    itemsDuringWeekend.add(item);
-                }
-            }
-        }
-        return itemsDuringWeekend;
-    }
-
-    public Set<Customer> getWomenCustomers(Set<Customer> customers) {
-        Set<Customer> women = new HashSet<>();
-        for (Customer customer : customers) {
-            if (customer.getGender().equals(Gender.FEMALE)) {
-                women.add(customer);
-            }
-        }
-        return women;
-    }
-
+//2021-03-01
+//    private Set<Customer> customers = new HashSet<>();
+//    private Map<List<Integer>, LocalDate> items = new HashMap<>();
+//
+//
+//    public List<Integer> getItemsDuringParticularWeekend(LocalDate startDate) {
+//        LocalDate endDate = startDate.plusDays(1);
+//        List<Integer> itemsDuringWeekend = new ArrayList<>();
+//
+//        for (Map.Entry<List<Integer>, LocalDate> entry : items.entrySet()) {
+//            if (entry.getValue().equals(startDate) || entry.getValue().equals(endDate)) {
+//                for (Integer item : entry.getKey()) {
+//                    itemsDuringWeekend.add(item);
+//                }
+//            }
+//        }
+//        return itemsDuringWeekend;
+//    }
 
 
 //    //output is the list of item starting with the least popular item
