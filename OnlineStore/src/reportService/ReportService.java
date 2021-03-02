@@ -24,25 +24,28 @@ public class ReportService {
     }
 
     //pass true - to see most popular items, false - to see least popular items
-    public List<Item> getPopularItemsByGender(List<Customer> customers, Gender gender, boolean isPopular) {
+    public List<Item> getRankedItemsBasedOnGender(List<Customer> customers, Gender gender, boolean isPopular) {
         List<Customer> customerByGender = customerService.getCustomersByGender(customers, gender);
         List<Item> itemsByGender = new ArrayList<>();
 
         customerByGender.forEach(customer -> itemsByGender.addAll(customer.getItems()));
 
-        return getPopularItems(itemsByGender, isPopular);
+        return getRankedItems(itemsByGender, isPopular);
     }
 
-    public List<Item> getPopularItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate, boolean isPopular) {
+    public List<Item> getRankedItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate, boolean isPopular) {
         List<Item> itemsDuringTimeInterval = getItemsDuringTimeInterval(orders, startDate, endDate);
-        return getPopularItems(itemsDuringTimeInterval, isPopular);
+        return getRankedItems(itemsDuringTimeInterval, isPopular);
     }
 
-    public List<Item> getPopularItems(List<Item> items, boolean isPopular) {
+    public List<Item> getFirstRankedItems(List<Item> items, boolean isPopular, int numberOfItems) {
+        return getRankedItems(items, isPopular).subList(0, numberOfItems);
+    }
+
+    public List<Item> getRankedItems(List<Item> items, boolean isPopular) {
         List<Integer> ratedItemListCode = getRankedItemIds(items, isPopular);
         return itemService.getItemsById(ratedItemListCode);
     }
-
 
     public List<Item> getItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate) {
         List<Item> itemsDuringTimeInterval = new ArrayList<>();
@@ -87,40 +90,5 @@ public class ReportService {
         }
         return itemMap;
     }
-
-//2021-03-01
-//    private Set<Customer> customers = new HashSet<>();
-//    private Map<List<Integer>, LocalDate> items = new HashMap<>();
-//
-//
-//    public List<Integer> getItemsDuringParticularWeekend(LocalDate startDate) {
-//        LocalDate endDate = startDate.plusDays(1);
-//        List<Integer> itemsDuringWeekend = new ArrayList<>();
-//
-//        for (Map.Entry<List<Integer>, LocalDate> entry : items.entrySet()) {
-//            if (entry.getValue().equals(startDate) || entry.getValue().equals(endDate)) {
-//                for (Integer item : entry.getKey()) {
-//                    itemsDuringWeekend.add(item);
-//                }
-//            }
-//        }
-//        return itemsDuringWeekend;
-//    }
-
-
-//    //output is the list of item starting with the least popular item
-//    public List<Integer> leastPopularItems(List<Integer> items) {
-//        Map<Integer, Integer> itemMap = itemIntoMap(items);
-//        List<Map.Entry<Integer, Integer>> itemMapToSort = new ArrayList<>(itemMap.entrySet());
-//        List<Integer> leastPopularItems = new ArrayList<>();
-//
-//        itemMapToSort.sort(Comparator.comparing(Map.Entry::getValue));
-//
-//        itemMapToSort.forEach(s -> {
-//            leastPopularItems.add(s.getKey());
-//        });
-//        return leastPopularItems;
-//    }
-
 
 }
