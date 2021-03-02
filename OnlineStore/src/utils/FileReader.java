@@ -7,9 +7,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadFileService {
+public class FileReader {
 
-    public List<String> readFromFile(String path) {
+    public static List<String> readFromFile(String path) {
         List<String> fileContent = new ArrayList<>();
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(path))) {
@@ -23,5 +23,4 @@ public class ReadFileService {
         }
         return fileContent;
     }
-
 }
