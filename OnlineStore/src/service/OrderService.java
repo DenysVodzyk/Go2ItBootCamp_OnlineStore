@@ -1,6 +1,7 @@
 package service;
 
 import entity.Customer;
+import entity.Item;
 import entity.Order;
 import repository.OrderRepository;
 
@@ -51,6 +52,10 @@ public class OrderService {
 
     public Order getByCustomerId(int customerId) {
         return orderRepository.getByCustomerId(customerId);
+    }
+
+    public List<Item> getAllItemsFromAllOrders() {
+        return orderRepository.getAllItemsFromAllOrders();
     }
 
 }
