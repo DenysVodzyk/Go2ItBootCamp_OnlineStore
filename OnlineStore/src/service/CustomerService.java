@@ -77,7 +77,7 @@ public class CustomerService {
     public List<Customer> getAll() {
         List<Customer> customers = new ArrayList<>();
         for (Customer customer : customerRepository.getAll()) {
-            setOrderToCustomer(customer);
+            setCustomerOrder(customer);
             customers.add(customer);
         }
         return customers;
@@ -85,19 +85,23 @@ public class CustomerService {
 
     public Customer getById(int id) {
         Customer customer = customerRepository.getById(id);
-        setOrderToCustomer(customer);
+        setCustomerOrder(customer);
         return customer;
     }
 
     public Customer getByName(String name) {
         Customer customer = customerRepository.getByName(name);
-        setOrderToCustomer(customer);
+        setCustomerOrder(customer);
         return customer;
     }
 
-    public void setOrderToCustomer(Customer customer) {
-        Order order = orderService.getByCustomerId(getId(customer));
+    public void setCustomerOrder(Customer customer) {
+        Order order = getCustomerOrder(customer);
         customer.setOrder(order);
+    }
+
+    public Order getCustomerOrder(Customer customer) {
+        return orderService.getByCustomerId(getId(customer));
     }
 
     public int getId(Customer customer) {
