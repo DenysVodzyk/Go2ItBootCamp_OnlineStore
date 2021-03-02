@@ -1,17 +1,10 @@
-import entity.Customer;
-import entity.Gender;
-import entity.Item;
-import service.CustomerService;
-import service.ItemService;
-import service.ReportService;
-
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         Execute execute = new Execute();
 
         execute.execute();
+    }
+}
 
 
 /*        String customerFilePath = "C:\\Users\\vodzy\\IdeaProjects\\Go2ItBootCamp_OnlineStore\\Customers.csv";
@@ -78,7 +71,3 @@ public class Main {
 //        System.out.println(popularItemsDuringWeekend);
 //
 //
-
-
-    }
-}
