@@ -10,11 +10,11 @@ import service.ItemService;
 import java.time.LocalDate;
 import java.util.*;
 
-public class ItemReportService {
+public class ReportService {
     private CustomerService customerService;
     private ItemService itemService;
 
-    public ItemReportService() {
+    public ReportService() {
         init();
     }
 
@@ -30,25 +30,34 @@ public class ItemReportService {
 
         customerByGender.forEach(customer -> itemsByGender.addAll(customer.getItems()));
 
-        List<Integer> ratedItemListCode = isPopularItems(itemsByGender, isPopular);
+        return getPopularItems(itemsByGender, isPopular);
+    }
 
+    public List<Item> getPopularItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate, boolean isPopular) {
+        List<Item> itemsDuringTimeInterval = getItemsDuringTimeInterval(orders, startDate, endDate);
+        return getPopularItems(itemsDuringTimeInterval, isPopular);
+    }
+
+    public List<Item> getPopularItems(List<Item> items, boolean isPopular) {
+        List<Integer> ratedItemListCode = getRankedItemIds(items, isPopular);
         return itemService.getItemsById(ratedItemListCode);
     }
 
 
-    //put all passed items into map, where key is the item and value is the number of occurrences
-    public Map<Integer, Integer> itemIntoMap(List<Integer> items) {
-        Map<Integer, Integer> itemMap = new HashMap<>();
-        for (int i : items) {
-            Integer count = itemMap.get(i);
-            itemMap.put(i, count != null ? count + 1 : 1);
+    public List<Item> getItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate) {
+        List<Item> itemsDuringTimeInterval = new ArrayList<>();
+
+        for (Order order : orders) {
+            if (!order.getOrderDate().isBefore(startDate) && !order.getOrderDate().isAfter(endDate)) {
+                itemsDuringTimeInterval.addAll(order.getItems());
+            }
         }
-        return itemMap;
+        return itemsDuringTimeInterval;
     }
 
     //returns the list of items based on the boolean passed (true - popular, false - not popular),
     // starting with the most/least popular item
-    public List<Integer> isPopularItems(List<Item> items, boolean isPopular) {
+    public List<Integer> getRankedItemIds(List<Item> items, boolean isPopular) {
         List<Integer> itemsCode = new ArrayList<>();
 
         for (Item item : items) {
@@ -65,10 +74,18 @@ public class ItemReportService {
             itemMapToSort.sort((o1, o2) -> o1.getValue().compareTo(o2.getValue()));
         }
 
-        itemMapToSort.forEach(s -> {
-            itemsSorted.add(s.getKey());
-        });
+        itemMapToSort.forEach(s -> itemsSorted.add(s.getKey()));
         return itemsSorted;
+    }
+
+    //put all passed items into map, where key is the item and value is the number of occurrences
+    public Map<Integer, Integer> itemIntoMap(List<Integer> items) {
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        for (int i : items) {
+            Integer count = itemMap.get(i);
+            itemMap.put(i, count != null ? count + 1 : 1);
+        }
+        return itemMap;
     }
 
 //2021-03-01
