@@ -42,22 +42,31 @@ public class Execute {
         customerService.addAllToDB(customersJava);
         orderService.addAllToDB(ordersJava);
 
-
         //Data from db
-        List<Item> itemsSQL = itemService.getAll();
         List<Customer> customersSQL = customerService.getAll();
         List<Order> ordersSQL = orderService.getAll();
+        List<Item> allItemsFromAllOrders = orderService.getAllItemsFromAllOrders();
 
 
-        //Get popular items among women
-        reportService.getPopularItemsByGender(customersSQL, Gender.FEMALE, true).forEach(System.out::println);
+        System.out.println("Most popular items among women:");
+        reportService.getRankedItemsBasedOnGender(customersSQL, Gender.FEMALE, true).forEach(System.out::println);
         System.out.println();
 
-        //Get popular items from time interval
-        reportService.getPopularItemsDuringTimeInterval(ordersSQL, LocalDate.of(2017, 6, 1), LocalDate.of(2017, 6, 16), true).forEach(System.out::println);
+        System.out.println("Most popular items during certain time interval:");
+        LocalDate startDate = LocalDate.of(2017, 6, 1);
+        LocalDate endDate = LocalDate.of(2017, 6, 16);
+        reportService.getRankedItemsDuringTimeInterval(ordersSQL, startDate, endDate, true).forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Most popular 3 items among all orders:");
+        reportService.getFirstRankedItems(allItemsFromAllOrders, true, 3).forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Least popular 3 items among all orders:");
+        reportService.getFirstRankedItems(allItemsFromAllOrders, false, 3).forEach(System.out::println);
+        System.out.println();
 
     }
-
 }
 
 
