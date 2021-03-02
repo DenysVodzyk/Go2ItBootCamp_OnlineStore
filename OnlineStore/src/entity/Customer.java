@@ -66,6 +66,10 @@ public class Customer {
         return order;
     }
 
+    public List<Item> getItems() {
+        return order.getItems();
+    }
+
     public void setOrder(Order order) {
         this.order = order;
     }
