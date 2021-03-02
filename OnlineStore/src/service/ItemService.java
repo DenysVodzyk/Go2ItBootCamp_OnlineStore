@@ -1,8 +1,6 @@
 package service;
 
-import entity.Customer;
 import entity.Item;
-import entity.Order;
 import repository.ItemRepository;
 import utils.FileReader;
 
@@ -41,9 +39,7 @@ public class ItemService {
 
     public void addAllToDB(List<Item> items) {
         for (Item item : items) {
-            if (getAll() == null || !getAll().contains(item)) {
-                itemRepository.addItem(item);
-            }
+            itemRepository.add(item);
         }
     }
 
@@ -55,23 +51,11 @@ public class ItemService {
         return itemRepository.getById(id);
     }
 
-    public List<Item> getItemsFromCustomers(List<Customer> customers) {
+    public List<Item> getItemsById(List<Integer> itemIds) {
         List<Item> items = new ArrayList<>();
-        for (Customer customer : customers) {
-            for (Order order : customer.getOrder()) {
-                items.addAll(order.getItems());
-            }
+        for (Integer itemId : itemIds) {
+            items.add(getById(itemId));
         }
         return items;
     }
 }
-
-
-//    public Item getItemById(int id, String filePath) {
-//        for (Item item : getAll(filePath)) {
-//            if (item.getId() == id) {
-//                return item;
-//            }
-//        }
-//        return null;
-//    }
