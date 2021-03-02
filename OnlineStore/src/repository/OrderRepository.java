@@ -151,5 +151,22 @@ public class OrderRepository {
         return orders;
     }
 
+    public List<Item> getAllItemsFromAllOrders() {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT itemId FROM orders";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement stm = con.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                int itemId = rs.getInt("itemId");
+                items.add(itemRepository.getById(itemId));
+            }
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+        }
+        return items;
+    }
+
+
 }
 
