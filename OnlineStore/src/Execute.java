@@ -6,6 +6,7 @@ import reportService.ReportService;
 import service.CustomerService;
 import service.ItemService;
 import service.OrderService;
+import utils.FileSaver;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -58,12 +59,16 @@ public class Execute {
         reportService.getRankedItemsDuringTimeInterval(ordersSQL, startDate, endDate, true).forEach(System.out::println);
         System.out.println();
 
-        System.out.println("Most popular 3 items among all orders:");
-        reportService.getFirstRankedItems(allItemsFromAllOrders, true, 3).forEach(System.out::println);
+        System.out.println("Most popular 3 items among all orders. Displayed and saved into file:");
+        List<Item> mostPopularItems = reportService.getFirstRankedItems(allItemsFromAllOrders, true, 3);
+        mostPopularItems.forEach(System.out::println);
+        FileSaver.saveIntoFile(mostPopularItems, "OnlineStore/src/primaryItems.csv", FileSaver.ITEM_FILE_HEADER);
         System.out.println();
 
-        System.out.println("Least popular 3 items among all orders:");
-        reportService.getFirstRankedItems(allItemsFromAllOrders, false, 3).forEach(System.out::println);
+        System.out.println("Least popular 3 items among all orders. Displayed and saved into file:");
+        List<Item> leastPopularItems = reportService.getFirstRankedItems(allItemsFromAllOrders, false, 3);
+        leastPopularItems.forEach(System.out::println);
+        FileSaver.saveIntoFile(leastPopularItems, "OnlineStore/src/candidateToRemove.csv", FileSaver.ITEM_FILE_HEADER);
         System.out.println();
 
     }
