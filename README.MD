@@ -20,7 +20,7 @@ To make sure setup is correct and JDBC is running, run the TestDatabase file fro
 ## High-Level Architecture
 
 <p align="center">
-   <img src ="readMeSource/Architecture.png" width="600">
+   <img src ="readMeSource/Architecture.PNG" width="600">
 </p>
 
 <p align="center">
