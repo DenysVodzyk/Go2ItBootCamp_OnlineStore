@@ -1,25 +1,37 @@
-Task Description: 
+# Online store
 
-There are two .csv files with information from client's CRM: items.csv and customer.csv. 
-Each file contains:
--	the header with the column description. 
--	the body/content. 
-
-All the values are split by delimiters (different in each file). 
-LastPurchases in customers.csv can contain an array (with " ") or one element (no " ").
-PhoneNumber might be empty (no value, just delimiter). DateOfLastPurchase has a format of mm/dd/yyyy. 
-
-Tasks:
-1.	Read files and create a collection of Java objects based on that data.
-2.	Persist all the data in DB (DB should be created based on entities in csv files).
-3.	Create reports from Java:
-- what goods are the most popular among women.
-- the most popular goods during a particular weekend (passed in as a param).
-4.	Alter the DB using plain SQL:
-- create new columns: PrimaryItem, CandidateToRemove.
-- fetch three the most and least popular goods and mark them correspondingly in the table.
-5.	Write all the marked goods (see the bullet point above) in two different files: 
-- primaryItems.csv with the most popular goods; 
-- candidateToRemove.csv - the least popular good. 
-All the data should be in csv format with ; used as a delimiter.
+This project is designed to perform basic CRUD operations for online store database using JDBC.   
  
+## Overview
+* Two csv files provided with information from client's CRM: items.csv and customer.csv.
+* Data about customer, item and order is retrieved and stored in SQL database using JDBC connector.
+* Architecture is built on Inversion of Control principles by implementing Repository-Service Pattern.
+* Reports can be saved as csv files:
+   :white_check_mark: Most popular items.
+   :white_check_mark: Least popular items.
+   :white_check_mark: Items popular among certain gender.
+   :white_check_mark: Items popular during specific time interval.
+
+## Setup
+To run this project on your machine make sure you have the MySQL JDBC driver installed.   
+To make sure setup is correct and JDBC is running, run the TestDatabase file from your shell.
+
+
+## High-Level Architecture
+
+<p align="center">
+   <img src ="readMeSource/Architecture.png" width="600">
+</p>
+
+<p align="center">
+   <i>"High level overview of the architecture"</i>
+</p>
+
+
+
+
+
+
+
+
+
