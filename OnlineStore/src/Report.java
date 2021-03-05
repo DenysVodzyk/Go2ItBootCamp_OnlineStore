@@ -1,5 +1,3 @@
-package reportService;
-
 import entity.Customer;
 import entity.Gender;
 import entity.Item;
@@ -10,11 +8,11 @@ import service.ItemService;
 import java.time.LocalDate;
 import java.util.*;
 
-public class ReportService {
+public class Report {
     private CustomerService customerService;
     private ItemService itemService;
 
-    public ReportService() {
+    public Report() {
         init();
     }
 
