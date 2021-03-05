@@ -2,7 +2,6 @@ import entity.Customer;
 import entity.Gender;
 import entity.Item;
 import entity.Order;
-import reportService.ReportService;
 import service.CustomerService;
 import service.ItemService;
 import service.OrderService;
@@ -16,7 +15,7 @@ public class Execute {
     private ItemService itemService;
     private CustomerService customerService;
     private OrderService orderService;
-    private ReportService reportService;
+    private Report reportService;
     private final String ITEM_FILE_PATH = "OnlineStore/src/inputFiles/Items.csv";
     private final String CUSTOMER_FILE_PATH = "OnlineStore/src/inputFiles/Customers.csv";
 
@@ -29,7 +28,7 @@ public class Execute {
         this.itemService = new ItemService();
         this.customerService = new CustomerService();
         this.orderService = new OrderService();
-        this.reportService = new ReportService();
+        this.reportService = new Report();
     }
 
     public void execute() {
