@@ -22,26 +22,26 @@ public class Report {
     }
 
     //pass true - to see most popular items, false - to see least popular items
-    public List<Item> getRankedItemsBasedOnGender(List<Customer> customers, Gender gender, boolean isPopular) {
+    public List<Item> getTopRankedItemsBasedOnGender(List<Customer> customers, Gender gender, boolean isPopularAsc) {
         List<Customer> customerByGender = customerService.getCustomersByGender(customers, gender);
         List<Item> itemsByGender = new ArrayList<>();
 
         customerByGender.forEach(customer -> itemsByGender.addAll(customer.getItems()));
 
-        return getRankedItems(itemsByGender, isPopular);
+        return getTopRankedItems(itemsByGender, isPopularAsc);
     }
 
-    public List<Item> getRankedItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate, boolean isPopular) {
+    public List<Item> getTopRankedItemsDuringTimeInterval(List<Order> orders, LocalDate startDate, LocalDate endDate, boolean isPopularAsc) {
         List<Item> itemsDuringTimeInterval = getItemsDuringTimeInterval(orders, startDate, endDate);
-        return getRankedItems(itemsDuringTimeInterval, isPopular);
+        return getTopRankedItems(itemsDuringTimeInterval, isPopularAsc);
     }
 
     public List<Item> getFirstRankedItems(List<Item> items, boolean isPopular, int numberOfItems) {
-        return getRankedItems(items, isPopular).subList(0, numberOfItems);
+        return getTopRankedItems(items, isPopular).subList(0, numberOfItems);
     }
 
-    public List<Item> getRankedItems(List<Item> items, boolean isPopular) {
-        List<Integer> ratedItemListCode = getRankedItemIds(items, isPopular);
+    public List<Item> getTopRankedItems(List<Item> items, boolean isPopular) {
+        List<Integer> ratedItemListCode = getTopRankedItemIds(items, isPopular);
         return itemService.getItemsById(ratedItemListCode);
     }
 
@@ -58,7 +58,7 @@ public class Report {
 
     //returns the list of items based on the boolean passed (true - popular, false - not popular),
     // starting with the most/least popular item
-    public List<Integer> getRankedItemIds(List<Item> items, boolean isPopular) {
+    private List<Integer> getTopRankedItemIds(List<Item> items, boolean isPopularAsc) {
         List<Integer> itemsCode = new ArrayList<>();
 
         for (Item item : items) {
@@ -69,7 +69,7 @@ public class Report {
         List<Map.Entry<Integer, Integer>> itemMapToSort = new ArrayList<>(itemMap.entrySet());
         List<Integer> itemsSorted = new ArrayList<>();
 
-        if (isPopular) {
+        if (isPopularAsc) {
             itemMapToSort.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         } else {
             itemMapToSort.sort((o1, o2) -> o1.getValue().compareTo(o2.getValue()));
@@ -80,7 +80,7 @@ public class Report {
     }
 
     //put all passed items into map, where key is the item and value is the number of occurrences
-    public Map<Integer, Integer> itemIntoMap(List<Integer> items) {
+    private Map<Integer, Integer> itemIntoMap(List<Integer> items) {
         Map<Integer, Integer> itemMap = new HashMap<>();
         for (int i : items) {
             Integer count = itemMap.get(i);
