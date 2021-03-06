@@ -13,20 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerService {
-    private final DateTimeFormatter DOB = DateTimeFormatter.ofPattern("d MMMM yyyy");
-    private final DateTimeFormatter LAST_PURCHASE_DATE = DateTimeFormatter.ofPattern("M/d/yyyy");
+    private final DateTimeFormatter DOB_FORMAT = DateTimeFormatter.ofPattern("d MMMM yyyy");
+    private final DateTimeFormatter LAST_PURCHASE_DATE_FORMAT = DateTimeFormatter.ofPattern("M/d/yyyy");
     private ItemService itemService;
     private OrderService orderService;
     private CustomerRepository customerRepository;
 
     public CustomerService() {
         init();
-        this.customerRepository = new CustomerRepository();
-        this.orderService = new OrderService();
     }
 
     private void init() {
         this.itemService = new ItemService();
+        this.customerRepository = new CustomerRepository();
+        this.orderService = new OrderService();
     }
 
     public List<Customer> parseAll(String customersFilePath) {
@@ -36,12 +36,12 @@ public class CustomerService {
         for (String customer : fileData) {
             String[] customerData = customer.split("[;:]");
             String name = customerData[0];
-            LocalDate dOB = LocalDate.parse(customerData[1], DOB);
+            LocalDate dOB = LocalDate.parse(customerData[1], DOB_FORMAT);
             String address = trimFirstLastCharacter(customerData[2]);
-            Gender gender = GenderService.getGender(customerData[3]);
+            Gender gender = Gender.getGender(customerData[3]);
             String phoneNumber = customerData[4];
             List<Item> lastPurchases = getLastPurchases(customerData[5]);
-            LocalDate dateOfLastPurchase = LocalDate.parse(customerData[6], LAST_PURCHASE_DATE);
+            LocalDate dateOfLastPurchase = LocalDate.parse(customerData[6], LAST_PURCHASE_DATE_FORMAT);
 
             if ((phoneNumber.isEmpty())) {
                 customers.add(new Customer(name, dOB, address, gender, "", lastPurchases, dateOfLastPurchase));
