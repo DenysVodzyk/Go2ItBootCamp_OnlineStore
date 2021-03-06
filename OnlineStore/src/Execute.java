@@ -49,13 +49,13 @@ public class Execute {
 
 
         System.out.println("Most popular items among women:");
-        reportService.getRankedItemsBasedOnGender(customersSQL, Gender.FEMALE, true).forEach(System.out::println);
+        reportService.getTopRankedItemsBasedOnGender(customersSQL, Gender.FEMALE, true).forEach(System.out::println);
         System.out.println();
 
         System.out.println("Most popular items during certain time interval:");
         LocalDate startDate = LocalDate.of(2017, 6, 1);
         LocalDate endDate = LocalDate.of(2017, 6, 16);
-        reportService.getRankedItemsDuringTimeInterval(ordersSQL, startDate, endDate, true).forEach(System.out::println);
+        reportService.getTopRankedItemsDuringTimeInterval(ordersSQL, startDate, endDate, true).forEach(System.out::println);
         System.out.println();
 
         System.out.println("Most popular 3 items among all orders. Displayed and saved into file:");
