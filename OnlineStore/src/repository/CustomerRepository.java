@@ -2,7 +2,6 @@ package repository;
 
 import entity.Customer;
 import entity.Gender;
-import service.GenderService;
 import utils.DBConnection;
 
 import java.io.IOException;
@@ -14,45 +13,27 @@ import java.util.List;
 public class CustomerRepository {
 
     public void add(Customer customer) {
-        String sql = "INSERT INTO customer(name, dob, address, gender, phoneNumber) VALUES (?, ?, ?, ?, ?)";
         String name = customer.getName();
         java.sql.Date dob = java.sql.Date.valueOf(customer.getDateOfBirth());
         String address = customer.getAddress();
         String gender = customer.getGender().toString();
         String phoneNumber = customer.getPhoneNumber();
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, name);
-            stm.setDate(2, dob);
-            stm.setString(3, address);
-            stm.setString(4, gender);
-            stm.setString(5, phoneNumber);
 
-            if (!isInDb(name, dob, address, gender)) {
+        if (getByName(name) == null) {
+            String sql = "INSERT INTO customer(name, dob, address, gender, phoneNumber) VALUES (?, ?, ?, ?, ?)";
+
+            try (Connection con = DBConnection.getConnection();
+                 PreparedStatement stm = con.prepareStatement(sql)) {
+                stm.setString(1, name);
+                stm.setDate(2, dob);
+                stm.setString(3, address);
+                stm.setString(4, gender);
+                stm.setString(5, phoneNumber);
                 stm.executeUpdate();
+            } catch (SQLException | IOException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
         }
-    }
-
-    public boolean isInDb(String name, Date dob, String address, String gender) {
-        boolean result = false;
-        String sql = "SELECT * FROM customer WHERE name=? AND dob=? AND address=? AND gender=?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setString(1, name);
-            stm.setDate(2, dob);
-            stm.setString(3, address);
-            stm.setString(4, gender);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                result = true;
-            }
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        }
-        return result;
     }
 
     public Customer getById(int id) {
@@ -66,7 +47,7 @@ public class CustomerRepository {
                 LocalDate dob = rs.getDate("dob").toLocalDate();
                 String address = rs.getString("address");
                 String genderString = rs.getString("gender");
-                Gender gender = GenderService.getGender(genderString);
+                Gender gender = Gender.getGender(genderString);
                 String phoneNumber = rs.getString("phoneNumber");
 
                 customer = new Customer(name, dob, address, gender, phoneNumber, null, null);
@@ -89,7 +70,7 @@ public class CustomerRepository {
                 LocalDate dob = rs.getDate("dob").toLocalDate();
                 String address = rs.getString("address");
                 String genderString = rs.getString("gender");
-                Gender gender = GenderService.getGender(genderString);
+                Gender gender = Gender.getGender(genderString);
                 String phoneNumber = rs.getString("phoneNumber");
 
                 customer = new Customer(name, dob, address, gender, phoneNumber, null, null);
@@ -111,7 +92,7 @@ public class CustomerRepository {
                 LocalDate dob = rs.getDate("dob").toLocalDate();
                 String address = rs.getString("address");
                 String genderString = rs.getString("gender");
-                Gender gender = GenderService.getGender(genderString);
+                Gender gender = Gender.getGender(genderString);
                 String phoneNumber = rs.getString("phoneNumber");
 
                 customers.add(new Customer(name, dob, address, gender, phoneNumber, null, null));
