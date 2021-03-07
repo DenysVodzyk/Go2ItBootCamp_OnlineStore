@@ -1,11 +1,9 @@
 package service;
 
-import entity.Customer;
 import entity.Item;
 import entity.Order;
 import repository.OrderRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderService {
@@ -19,20 +17,7 @@ public class OrderService {
         this.orderRepository = new OrderRepository();
     }
 
-    public List<Order> parseAll(String customersFilePath) {
-        CustomerService customerService = new CustomerService();
-        List<Order> orders = new ArrayList<>();
-        List<Customer> customers = customerService.parseAll(customersFilePath);
-
-        for (int i = 0; i < customers.size(); i++) {
-            Order order = customers.get(i).getOrder();
-            order.setId(i + 1);
-            orders.add(order);
-        }
-        return orders;
-    }
-
-    public void addAllToDB(List<Order> orders) {
+    public void save(List<Order> orders) {
         for (Order order : orders) {
             orderRepository.add(order);
         }
@@ -57,5 +42,4 @@ public class OrderService {
     public List<Item> getAllItemsFromAllOrders() {
         return orderRepository.getAllItemsFromAllOrders();
     }
-
 }
