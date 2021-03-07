@@ -37,33 +37,10 @@ public class OrderRepository {
                 stm.setInt(2, customerId);
                 stm.setInt(3, itemId);
                 stm.setDate(4, orderDate);
-
-                if (!isInDb(orderId, customerId, itemId, orderDate)) {
-                    stm.executeUpdate();
-                }
             }
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
-    }
-
-    public boolean isInDb(int orderId, int customerId, int itemId, Date orderDate) {
-        boolean result = false;
-        String sql = "SELECT * FROM orders WHERE id=? AND customerId=? AND itemId=? AND orderDate=?";
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement stm = con.prepareStatement(sql)) {
-            stm.setInt(1, orderId);
-            stm.setInt(2, customerId);
-            stm.setInt(3, itemId);
-            stm.setDate(4, orderDate);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                result = true;
-            }
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
-        }
-        return result;
     }
 
     public Order getById(int id) {
