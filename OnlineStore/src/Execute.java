@@ -2,9 +2,8 @@ import entity.Customer;
 import entity.Gender;
 import entity.Item;
 import entity.Order;
-import service.CustomerService;
-import service.ItemService;
-import service.OrderService;
+import service.*;
+import utils.Constant;
 import utils.FileSaver;
 
 import java.time.LocalDate;
@@ -15,10 +14,8 @@ public class Execute {
     private ItemService itemService;
     private CustomerService customerService;
     private OrderService orderService;
-    private Report reportService;
-    private final String ITEM_FILE_PATH = "OnlineStore/src/inputFiles/Items.csv";
-    private final String CUSTOMER_FILE_PATH = "OnlineStore/src/inputFiles/Customers.csv";
-
+    private ReportService reportService;
+    private FileReaderService fileReaderService;
 
     public Execute() {
         init();
@@ -28,19 +25,20 @@ public class Execute {
         this.itemService = new ItemService();
         this.customerService = new CustomerService();
         this.orderService = new OrderService();
-        this.reportService = new Report();
+        this.reportService = new ReportService();
+        this.fileReaderService = new FileReaderService();
     }
 
     public void execute() {
         //Fetched data from .csv files to Java
-        List<Item> itemsJava = itemService.parseAll(ITEM_FILE_PATH);
-        List<Customer> customersJava = customerService.parseAll(CUSTOMER_FILE_PATH);
-        List<Order> ordersJava = orderService.parseAll(CUSTOMER_FILE_PATH);
+        List<Item> itemsJava = fileReaderService.parseAllItems(Constant.ITEM_FILE_PATH);
+        List<Customer> customersJava = fileReaderService.parseAllCustomers(Constant.CUSTOMER_FILE_PATH);
+        List<Order> ordersJava = fileReaderService.parseAllOrders(Constant.CUSTOMER_FILE_PATH);
 
         //add all items/customers/orders to DB
-        itemService.addAllToDB(itemsJava);
-        customerService.addAllToDB(customersJava);
-        orderService.addAllToDB(ordersJava);
+        itemService.save(itemsJava);
+        customerService.save(customersJava);
+        orderService.save(ordersJava);
 
         //Data from db
         List<Customer> customersSQL = customerService.getAll();
@@ -61,13 +59,13 @@ public class Execute {
         System.out.println("Most popular 3 items among all orders. Displayed and saved into file:");
         List<Item> mostPopularItems = reportService.getFirstRankedItems(allItemsFromAllOrders, true, 3);
         mostPopularItems.forEach(System.out::println);
-        FileSaver.saveIntoFile(mostPopularItems, "OnlineStore/src/primaryItems.csv", FileSaver.ITEM_FILE_HEADER);
+        FileSaver.saveIntoFile(mostPopularItems, "OnlineStore/src/primaryItems.csv", Constant.ITEM_FILE_HEADER);
         System.out.println();
 
         System.out.println("Least popular 3 items among all orders. Displayed and saved into file:");
         List<Item> leastPopularItems = reportService.getFirstRankedItems(allItemsFromAllOrders, false, 3);
         leastPopularItems.forEach(System.out::println);
-        FileSaver.saveIntoFile(leastPopularItems, "OnlineStore/src/candidateToRemove.csv", FileSaver.ITEM_FILE_HEADER);
+        FileSaver.saveIntoFile(leastPopularItems, "OnlineStore/src/candidateToRemove.csv", Constant.ITEM_FILE_HEADER);
         System.out.println();
 
     }
