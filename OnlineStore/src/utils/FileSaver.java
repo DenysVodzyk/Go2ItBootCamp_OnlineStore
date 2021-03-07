@@ -9,8 +9,6 @@ import java.util.List;
 
 public class FileSaver {
 
-    public static final String ITEM_FILE_HEADER = "id;title;code;producer;dateOfLastUpdate";
-
     public static void saveIntoFile(List<Item> items, String filePathWithName, String fileHeader) {
 
         try (FileWriter fileWriter = new FileWriter(filePathWithName);
