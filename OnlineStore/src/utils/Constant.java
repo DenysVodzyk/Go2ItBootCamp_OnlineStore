@@ -9,6 +9,6 @@ public class Constant {
 
     public static final String ITEM_FILE_HEADER = "id;title;code;producer;dateOfLastUpdate";
 
-    public static final String ITEM_FILE_PATH = "OnlineStore/src/inputFiles/Items.csv";
-    public static final String CUSTOMER_FILE_PATH = "OnlineStore/src/inputFiles/Customers.csv";
+    public static final String ITEM_FILE_PATH = "Items.csv";
+    public static final String CUSTOMER_FILE_PATH = "Customers.csv";
 }
