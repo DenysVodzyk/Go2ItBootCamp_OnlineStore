@@ -16,7 +16,6 @@ This project is designed to perform basic CRUD operations for online store datab
 To run this project on your machine make sure you have the MySQL JDBC driver installed.   
 To make sure setup is correct and JDBC is running, run the TestDatabase file from your shell.
 
-
 ## High-Level Architecture
 
 <p align="center">
@@ -25,6 +24,14 @@ To make sure setup is correct and JDBC is running, run the TestDatabase file fro
 
 <p align="center">
    <i>"High level overview of the architecture"</i>
+</p>
+
+<p align="center">
+   <img src ="readMeSource/SQL_Diagram.PNG" width="600">
+</p>
+
+<p align="center">
+   <i>"Overview of the SQL database architecture"</i>
 </p>
 
 
